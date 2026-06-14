@@ -25,9 +25,12 @@ app.use(
 );
 app.use(express.json());
 
-app.get('/api/health', (_req, res) =>
-  res.json({ ok: true, status: 'ok', service: 'optsklad-api' }),
-);
+const healthPayload = { ok: true, status: 'ok', service: 'optsklad-api' };
+const healthHandler = (_req: express.Request, res: express.Response) => res.json(healthPayload);
+
+app.get('/api/health', healthHandler);
+app.get('/health', healthHandler);
+app.get('/', healthHandler);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productsRoutes);

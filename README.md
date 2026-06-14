@@ -70,10 +70,13 @@ npm test
 
 **Backend (Railway):**
 
-1. New Project → Deploy from GitHub → Root Directory: `backend`
-2. Додати PostgreSQL plugin
-3. Env: `DATABASE_URL` (з plugin), `JWT_SECRET`, `CORS_ORIGIN` (URL Vercel), `NODE_ENV=production`
-4. Healthcheck: `GET /api/health`
+1. New Project → Deploy from GitHub → **Root Directory: `backend`** (обовʼязково!)
+2. Додати PostgreSQL plugin → у backend Variables: `DATABASE_URL` = **Reference** → PostgreSQL
+3. Env: `JWT_SECRET`, `NODE_ENV=production`, пізніше `CORS_ORIGIN` (URL Vercel)
+4. Settings → Health Check Path: `/api/health` (або `/health`)
+5. Якщо healthcheck падає ~1:30 — перевірте Root Directory і Deploy Logs (`[start] API listening`)
+
+**Типові помилки healthcheck:** Root Directory не `backend` · немає PostgreSQL · `DATABASE_URL` не привʼязаний.
 
 **Frontend (Vercel):**
 

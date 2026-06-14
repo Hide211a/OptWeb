@@ -1,14 +1,13 @@
-# Railway: Root Directory = backend
-# Додайте PostgreSQL plugin → DATABASE_URL підставиться автоматично.
+# Railway: Settings → Root Directory MUST be "backend"
+# Додайте PostgreSQL plugin → DATABASE_URL через Reference у Variables.
 
 [build]
 builder = "NIXPACKS"
 buildCommand = "npm run build"
 
 [deploy]
-startCommand = "npm run start:prod"
+startCommand = "node dist/index.js"
 healthcheckPath = "/api/health"
 healthcheckTimeout = 300
-# Якщо healthcheck падає: Deploy Logs → шукайте [start] / API listening on 0.0.0.0
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3

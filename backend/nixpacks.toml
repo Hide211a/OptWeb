@@ -1,0 +1,3 @@
+# Railway Nixpacks — дублює railway.toml на випадок, якщо toml не підхопився.
+[start]
+cmd = "node dist/index.js"
