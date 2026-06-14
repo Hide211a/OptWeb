@@ -17,13 +17,12 @@ if (isProd && !dbUrl.startsWith('postgres')) {
 try {
   run('node scripts/prepare-schema.mjs');
   run('npx prisma generate');
-  run('npx prisma db push --skip-generate');
 } catch (err) {
-  console.error('[start] Database setup failed:', err?.message ?? err);
+  console.error('[start] Prisma client setup failed:', err?.message ?? err);
   process.exit(1);
 }
 
-console.log('[start] launching API…');
+console.log('[start] launching API (DB migrate runs in background)…');
 const server = spawn('node', ['dist/index.js'], { stdio: 'inherit', env: process.env });
 
 server.on('error', (err) => {
@@ -31,11 +30,16 @@ server.on('error', (err) => {
   process.exit(1);
 });
 
-console.log('[start] seeding demo data in background…');
-spawn('npx', ['prisma', 'db', 'seed'], { stdio: 'inherit', env: process.env }).on('exit', (code) => {
-  console.log(`[start] seed finished (exit ${code ?? 0})`);
-});
-
 server.on('exit', (code) => {
   process.exit(code ?? 1);
+});
+
+const dbSetup = spawn(
+  'sh',
+  ['-c', 'npx prisma db push --skip-generate && npx prisma db seed'],
+  { stdio: 'inherit', env: process.env },
+);
+
+dbSetup.on('exit', (code) => {
+  console.log(`[start] db setup finished (exit ${code ?? 0})`);
 });
