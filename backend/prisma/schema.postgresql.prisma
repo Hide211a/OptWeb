@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  DIRECTOR
+}
+
+enum Unit {
+  KG
+  L
+  PCS
+  PACK
+}
+
+enum DocumentType {
+  RECEIPT
+  SHIPMENT
+  INVENTORY
+  WRITE_OFF
+}
+
+enum WriteOffReason {
+  EXPIRED
+  DAMAGE
+  OTHER
+}
+
+enum DocumentStatus {
+  DRAFT
+  POSTED
+}
+
+enum StorageZone {
+  DRY
+  COLD
+  FROZEN
+}
+
+enum AuditAction {
+  DOCUMENT_CREATE
+  DOCUMENT_UPDATE
+  DOCUMENT_DELETE
+  DOCUMENT_POST
+  DOCUMENT_UNPOST
+  USER_CREATE
+  USER_UPDATE
+  PRODUCT_CREATE
+  PRODUCT_UPDATE
+  PRODUCT_DEACTIVATE
+  PASSWORD_CHANGE
+  CUSTOMER_PRICE_UPDATE
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  passwordHash String
+  fullName     String
+  role         Role
+  isActive     Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  documents    Document[]
+  auditLogs    AuditLog[]
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  products Product[]
+}
+
+model Supplier {
+  id        String     @id @default(cuid())
+  name      String
+  phone     String?
+  email     String?
+  address   String?
+  isActive  Boolean    @default(true)
+  documents Document[]
+}
+
+model Customer {
+  id        String          @id @default(cuid())
+  name      String
+  phone     String?
+  email     String?
+  address   String?
+  edrpou    String?
+  isActive  Boolean         @default(true)
+  documents Document[]
+  prices    CustomerPrice[]
+}
+
+model Product {
+  id            String          @id @default(cuid())
+  sku           String          @unique
+  name          String
+  categoryId    String
+  category      Category        @relation(fields: [categoryId], references: [id])
+  unit          Unit
+  minStock      Float           @default(0)
+  shelfLifeDays Int?
+  storageZone   StorageZone     @default(DRY)
+  isActive      Boolean         @default(true)
+  createdAt     DateTime        @default(now())
+  batches       StockBatch[]
+  documentLines DocumentLine[]
+  customerPrices CustomerPrice[]
+}
+
+model StockBatch {
+  id                String      @id @default(cuid())
+  productId         String
+  product           Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity          Float
+  purchasePrice     Float?
+  productionDate    DateTime?
+  expiryDate        DateTime?
+  storageZone       StorageZone @default(DRY)
+  receivedAt        DateTime    @default(now())
+  receiptDocumentId String?
+}
+
+model Document {
+  id             String         @id @default(cuid())
+  number         String         @unique
+  type           DocumentType
+  status         DocumentStatus @default(DRAFT)
+  date           DateTime       @default(now())
+  notes          String?
+  writeOffReason WriteOffReason?
+  supplierId     String?
+  supplier       Supplier?      @relation(fields: [supplierId], references: [id])
+  customerId     String?
+  customer       Customer?      @relation(fields: [customerId], references: [id])
+  createdById    String
+  createdBy      User           @relation(fields: [createdById], references: [id])
+  postedAt       DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  lines          DocumentLine[]
+}
+
+model DocumentLine {
+  id              String    @id @default(cuid())
+  documentId      String
+  document        Document  @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  productId       String
+  product         Product   @relation(fields: [productId], references: [id])
+  quantity        Float
+  unitPrice       Float?
+  batchId         String?
+  actualQuantity  Float?
+  productionDate  DateTime?
+  expiryDate      DateTime?
+  lineOrder       Int       @default(0)
+}
+
+model CustomerPrice {
+  id         String   @id @default(cuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  unitPrice  Float
+  updatedAt  DateTime @updatedAt
+
+  @@unique([customerId, productId])
+}
+
+model AuditLog {
+  id         String      @id @default(cuid())
+  userId     String
+  user       User        @relation(fields: [userId], references: [id])
+  action     AuditAction
+  entityType String
+  entityId   String?
+  summary    String
+  metadata   String?
+  createdAt  DateTime    @default(now())
+}

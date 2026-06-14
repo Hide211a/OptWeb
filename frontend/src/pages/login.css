@@ -1,0 +1,366 @@
+/* ОптСклад — сторінка авторизації v2 */
+
+.login-v2 {
+  --login-green: #047857;
+  --login-green-light: #10b981;
+  --login-orange: #ea580c;
+  --login-cream: #f3f7f4;
+  --login-ink: #0f1a14;
+  --login-muted: #5f6b63;
+
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  background: var(--login-cream);
+  color: var(--login-ink);
+}
+
+/* Діагональний бренд-блок */
+.login-v2__slant {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 72%;
+  background: linear-gradient(128deg, #034a35 0%, var(--login-green) 42%, #0d9668 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 78%, 0 100%);
+  z-index: 0;
+}
+
+.login-v2__slant::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 35%, rgba(255, 255, 255, 0.09) 0%, transparent 42%),
+    radial-gradient(circle at 75% 15%, rgba(251, 191, 36, 0.14) 0%, transparent 38%);
+}
+
+.login-v2__slant::after {
+  content: '';
+  position: absolute;
+  right: -5%;
+  bottom: 8%;
+  width: 45%;
+  height: 55%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.06) 0px,
+    rgba(255, 255, 255, 0.06) 2px,
+    transparent 2px,
+    transparent 28px
+  );
+  border-left: 3px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px 0 0 4px;
+  opacity: 0.7;
+}
+
+/* Декоративні «коробки» */
+.login-v2__boxes {
+  position: absolute;
+  left: 6%;
+  bottom: 18%;
+  z-index: 1;
+  display: none;
+  gap: 10px;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+@media (min-width: 900px) {
+  .login-v2__boxes {
+    display: flex;
+  }
+}
+
+.login-v2__box {
+  border-radius: 6px;
+  animation: login-box-float 5s ease-in-out infinite;
+}
+
+.login-v2__box:nth-child(1) {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(145deg, #fbbf24, var(--login-orange));
+  animation-delay: 0s;
+}
+
+.login-v2__box:nth-child(2) {
+  width: 44px;
+  height: 64px;
+  background: linear-gradient(145deg, #6ee7b7, var(--login-green-light));
+  animation-delay: 0.8s;
+}
+
+.login-v2__box:nth-child(3) {
+  width: 58px;
+  height: 40px;
+  background: linear-gradient(145deg, #fcd34d, #f59e0b);
+  animation-delay: 1.6s;
+}
+
+@keyframes login-box-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Основна сітка */
+.login-v2__grid {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  padding: 2rem 1.25rem 2.5rem;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .login-v2__grid {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 3rem;
+    padding: 3rem 2.5rem;
+  }
+}
+
+/* Бренд */
+.login-v2__brand {
+  color: #fff;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+@media (min-width: 900px) {
+  .login-v2__brand {
+    padding: 2rem 0 2rem 1rem;
+  }
+}
+
+.login-v2__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 1.25rem;
+}
+
+.login-v2__eyebrow-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 12px #34d399;
+  animation: login-pulse 2s ease infinite;
+}
+
+@keyframes login-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+.login-v2__title {
+  margin: 0;
+  font-size: clamp(2.6rem, 8vw, 4.2rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.login-v2__title-accent {
+  display: block;
+  color: #a7f3d0;
+  font-size: 0.55em;
+  letter-spacing: -0.02em;
+  margin-top: 0.15em;
+}
+
+.login-v2__lead {
+  margin: 1.5rem 0 0;
+  max-width: 26rem;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.login-v2__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 2rem;
+}
+
+.login-v2__pill {
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ecfdf5;
+  backdrop-filter: blur(6px);
+}
+
+/* Панель входу */
+.login-v2__panel {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 28px;
+  padding: 2rem 1.75rem 1.75rem;
+  box-shadow:
+    0 2px 4px rgba(15, 26, 20, 0.04),
+    0 20px 50px rgba(4, 120, 87, 0.12),
+    0 0 0 1px rgba(4, 120, 87, 0.06);
+  animation: login-panel-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (min-width: 900px) {
+  .login-v2__panel {
+    margin: 0 0 0 auto;
+    padding: 2.25rem 2rem 2rem;
+  }
+}
+
+@keyframes login-panel-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px) rotate(-1deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+}
+
+.login-v2__panel-head {
+  margin-bottom: 1.75rem;
+}
+
+.login-v2__panel-head h2 {
+  margin: 0;
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--login-ink);
+}
+
+.login-v2__panel-head p {
+  margin: 0.4rem 0 0;
+  font-size: 0.92rem;
+  color: var(--login-muted);
+}
+
+.login-v2__submit {
+  margin-top: 1.5rem !important;
+  padding: 0.95rem !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  border-radius: 14px !important;
+  text-transform: none !important;
+  background: var(--login-ink) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 24px rgba(15, 26, 20, 0.2) !important;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s !important;
+}
+
+.login-v2__submit:hover {
+  background: var(--login-green) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(4, 120, 87, 0.28) !important;
+}
+
+.login-v2__demos-label {
+  margin: 2rem 0 0.85rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--login-muted);
+}
+
+.login-v2__demos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+@media (min-width: 480px) {
+  .login-v2__demos {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.login-v2__demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.85rem 0.4rem;
+  border: 2px solid #e8eeea;
+  border-radius: 16px;
+  background: #fafcfb;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.login-v2__demo:hover {
+  border-color: var(--demo-color, var(--login-green));
+  background: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(4, 120, 87, 0.1);
+}
+
+.login-v2__demo--active {
+  border-color: var(--demo-color, var(--login-green));
+  background: color-mix(in srgb, var(--demo-color, var(--login-green)) 8%, white);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--demo-color, var(--login-green)) 18%, transparent);
+}
+
+.login-v2__demo-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--demo-color, var(--login-green)) 14%, white);
+  color: var(--demo-color, var(--login-green));
+}
+
+.login-v2__demo-name {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--login-ink);
+}
+
+.login-v2__footer-note {
+  margin-top: 1.25rem;
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--login-muted);
+}
+
+/* Поля MUI всередині панелі */
+.login-v2__field .MuiOutlinedInput-root {
+  border-radius: 14px;
+  background: #fafcfb;
+}
+
+.login-v2__field .MuiOutlinedInput-root.Mui-focused {
+  background: #fff;
+}
+
+.login-v2__field .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--login-green);
+  border-width: 2px;
+}

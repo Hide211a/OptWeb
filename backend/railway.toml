@@ -1,0 +1,13 @@
+# Railway: Root Directory = backend
+# Додайте PostgreSQL plugin → DATABASE_URL підставиться автоматично.
+
+[build]
+builder = "NIXPACKS"
+buildCommand = "npm run build"
+
+[deploy]
+startCommand = "npm run start:prod"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 120
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3

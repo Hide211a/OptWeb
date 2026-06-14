@@ -1,0 +1,137 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(4, 120, 87, 0.22);
+  color: #0f1a14;
+}
+
+.app-main-surface {
+  background-color: #eef5f1;
+  background-image:
+    linear-gradient(135deg, rgba(4, 120, 87, 0.04) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(234, 88, 12, 0.03) 25%, transparent 25%),
+    radial-gradient(circle at 90% 10%, rgba(16, 185, 129, 0.08) 0%, transparent 40%);
+  background-size: 48px 48px, 48px 48px, auto;
+  min-height: 100vh;
+}
+
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.director-main-surface {
+  background: linear-gradient(165deg, #0b1410 0%, #0f1f18 45%, #132820 100%);
+  min-height: 100vh;
+}
+
+.manager-workspace-surface {
+  background-color: #eef5f1;
+  background-image:
+    radial-gradient(circle at 0% 0%, rgba(4, 120, 87, 0.07) 0%, transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(234, 88, 12, 0.05) 0%, transparent 40%);
+  min-height: 100vh;
+}
+
+.login-hero-float {
+  animation: float-soft 6s ease-in-out infinite;
+}
+
+.login-hero-float-delayed {
+  animation: float-soft 6s ease-in-out 1.5s infinite;
+}
+
+/* Горизонтальна прокрутка таблиць на мобільних */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.table-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background: rgba(4, 120, 87, 0.25);
+  border-radius: 3px;
+}
+
+.director-main-surface .table-scroll::-webkit-scrollbar-thumb {
+  background: rgba(52, 211, 153, 0.35);
+}
+
+/* Друк картки документа */
+@media print {
+  .no-print,
+  .MuiAppBar-root,
+  .MuiDrawer-root,
+  .MuiToolbar-root,
+  .MuiDialog-root {
+    display: none !important;
+  }
+
+  body,
+  .director-main-surface,
+  .app-main-surface,
+  .manager-workspace-surface {
+    background: #fff !important;
+  }
+
+  main .MuiContainer-root {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .document-print-root {
+    color: #111 !important;
+  }
+
+  .document-print-root .MuiTypography-root,
+  .document-print-root .MuiTableCell-root {
+    color: #111 !important;
+  }
+
+  .document-print-root .MuiBox-root {
+    background: #fff !important;
+    border-color: #ccc !important;
+    box-shadow: none !important;
+  }
+
+  .document-print-header {
+    display: block !important;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #047857;
+  }
+
+  .document-print-header h1 {
+    margin: 0 0 4px;
+    font-size: 1.35rem;
+    font-weight: 800;
+  }
+
+  .document-print-header p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #555;
+  }
+}
+
+.document-print-header {
+  display: none;
+}
